@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "floopy-sdk"
-version = "0.1.0" # x-release-please-version
+version = "0.2.0" # x-release-please-version
 description = "Official Floopy AI Gateway SDK for Python. Drop-in replacement for the openai SDK with cache, audit, experiments, and security on top."
 readme = "README.md"
 license = "Apache-2.0"
