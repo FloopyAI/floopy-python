@@ -6,6 +6,13 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 
 Releases are produced by `release-please` from Conventional Commits.
 
+## [0.2.0](https://github.com/FloopyAI/floopy-python/compare/floopy-sdk-v0.1.0...floopy-sdk-v0.2.0) (2026-05-17)
+
+
+### Added
+
+* publish python sdk ([84d451f](https://github.com/FloopyAI/floopy-python/commit/84d451f912d4c4b415f3346dde488967ea28b261))
+
 ## [Unreleased]
 
 ### Added
