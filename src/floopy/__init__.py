@@ -35,6 +35,9 @@ from ._errors import (
 from ._version import __version__
 from .resources import AsyncDecisionExportStream, DecisionExportStream
 from .types import (
+    Batch,
+    BatchList,
+    BatchRequestCounts,
     CacheOptions,
     Decision,
     DecisionListPage,
@@ -50,6 +53,8 @@ from .types import (
     ExportFormat,
     ExportTrailer,
     FeedbackSubmitResponse,
+    FileList,
+    FileObject,
     FirewallDecision,
     FloopyOptions,
     OrgConstraints,
@@ -67,6 +72,9 @@ __all__ = [
     "FLOOPY_HEADERS",
     "AsyncDecisionExportStream",
     "AsyncFloopy",
+    "Batch",
+    "BatchList",
+    "BatchRequestCounts",
     "CacheOptions",
     "Decision",
     "DecisionExportStream",
@@ -83,6 +91,8 @@ __all__ = [
     "ExportTrailer",
     "ExportedDecisionRow",
     "FeedbackSubmitResponse",
+    "FileList",
+    "FileObject",
     "FirewallDecision",
     "Floopy",
     "FloopyAuthError",

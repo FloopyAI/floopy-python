@@ -15,20 +15,24 @@ import httpx
 from ._http import AsyncHTTP, SyncHTTP
 from ._openai_delegate import create_async_openai_delegate, create_openai_delegate
 from .resources import (
+    AsyncBatchesResource,
     AsyncConstraintsResource,
     AsyncDecisionsResource,
     AsyncEvaluationsResource,
     AsyncExperimentsResource,
     AsyncExportResource,
     AsyncFeedbackResource,
+    AsyncFilesResource,
     AsyncRoutingResource,
     AsyncSessionsResource,
+    BatchesResource,
     ConstraintsResource,
     DecisionsResource,
     EvaluationsResource,
     ExperimentsResource,
     ExportResource,
     FeedbackResource,
+    FilesResource,
     RoutingResource,
     SessionsResource,
 )
@@ -82,6 +86,8 @@ class Floopy:
         self.evaluations = EvaluationsResource(self._http)
         self.routing = RoutingResource(self._http)
         self.sessions = SessionsResource(self._http)
+        self.files = FilesResource(self._http)
+        self.batches = BatchesResource(self._http)
 
     @property
     def openai(self) -> OpenAI:
@@ -151,6 +157,8 @@ class AsyncFloopy:
         self.evaluations = AsyncEvaluationsResource(self._http)
         self.routing = AsyncRoutingResource(self._http)
         self.sessions = AsyncSessionsResource(self._http)
+        self.files = AsyncFilesResource(self._http)
+        self.batches = AsyncBatchesResource(self._http)
 
     @property
     def openai(self) -> AsyncOpenAI:

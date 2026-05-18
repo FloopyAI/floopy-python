@@ -210,6 +210,40 @@ class SyncHTTP(_BaseHTTP):
         data = json.loads(text) if text else None
         return data, request_id
 
+    def request_bytes(
+        self,
+        method: str,
+        path: str,
+        *,
+        query: Query | None = None,
+        request_options: RequestOptions | None = None,
+    ) -> tuple[bytes, str | None]:
+        """Like :meth:`request` but returns the raw body bytes (no JSON
+        parsing) — used to download file content."""
+        response = self._request_raw(method, path, query=query, request_options=request_options)
+        request_id = response.headers.get(FLOOPY_HEADERS.REQUEST_ID) or None
+        return response.content, request_id
+
+    def request_multipart(
+        self,
+        method: str,
+        path: str,
+        *,
+        form: dict[str, Any],
+        files: dict[str, Any],
+        request_options: RequestOptions | None = None,
+    ) -> tuple[Any, str | None]:
+        """Send a ``multipart/form-data`` request (file upload)."""
+        response = self._request_raw(
+            method, path, files=files, form=form, request_options=request_options
+        )
+        request_id = response.headers.get(FLOOPY_HEADERS.REQUEST_ID) or None
+        if response.status_code == 204:
+            return None, request_id
+        text = response.text
+        data = json.loads(text) if text else None
+        return data, request_id
+
     def _request_raw(
         self,
         method: str,
@@ -217,12 +251,18 @@ class SyncHTTP(_BaseHTTP):
         *,
         body: Any | None = None,
         query: Query | None = None,
+        files: Any | None = None,
+        form: Any | None = None,
         request_options: RequestOptions | None = None,
     ) -> httpx.Response:
         url = self._build_url(path, _normalize_query(query))
         headers = self._build_request_headers(request_options)
+        multipart = files is not None or form is not None
         content: bytes | None = None
-        if body is not None:
+        # Multipart uploads are handed to httpx via ``files``/``data`` so it
+        # sets the ``multipart/form-data`` boundary itself — never JSON
+        # encoded and never given an explicit Content-Type.
+        if body is not None and not multipart:
             content = json.dumps(body).encode("utf-8")
             headers.setdefault(FLOOPY_HEADERS.CONTENT_TYPE, "application/json")
         timeout = self._timeout_for(request_options)
@@ -230,9 +270,14 @@ class SyncHTTP(_BaseHTTP):
         attempt = 0
         while True:
             try:
-                response = self._client.request(
-                    method, url, headers=headers, content=content, timeout=timeout
-                )
+                if multipart:
+                    response = self._client.request(
+                        method, url, headers=headers, data=form, files=files, timeout=timeout
+                    )
+                else:
+                    response = self._client.request(
+                        method, url, headers=headers, content=content, timeout=timeout
+                    )
             except httpx.TimeoutException as err:
                 raise FloopyTimeoutError(f"Request timed out after {timeout}s", err) from err
             except httpx.RequestError as err:
@@ -341,6 +386,42 @@ class AsyncHTTP(_BaseHTTP):
         data = json.loads(text) if text else None
         return data, request_id
 
+    async def request_bytes(
+        self,
+        method: str,
+        path: str,
+        *,
+        query: Query | None = None,
+        request_options: RequestOptions | None = None,
+    ) -> tuple[bytes, str | None]:
+        """Like :meth:`request` but returns the raw body bytes (no JSON
+        parsing) — used to download file content."""
+        response = await self._request_raw(
+            method, path, query=query, request_options=request_options
+        )
+        request_id = response.headers.get(FLOOPY_HEADERS.REQUEST_ID) or None
+        return response.content, request_id
+
+    async def request_multipart(
+        self,
+        method: str,
+        path: str,
+        *,
+        form: dict[str, Any],
+        files: dict[str, Any],
+        request_options: RequestOptions | None = None,
+    ) -> tuple[Any, str | None]:
+        """Send a ``multipart/form-data`` request (file upload)."""
+        response = await self._request_raw(
+            method, path, files=files, form=form, request_options=request_options
+        )
+        request_id = response.headers.get(FLOOPY_HEADERS.REQUEST_ID) or None
+        if response.status_code == 204:
+            return None, request_id
+        text = response.text
+        data = json.loads(text) if text else None
+        return data, request_id
+
     async def _request_raw(
         self,
         method: str,
@@ -348,12 +429,15 @@ class AsyncHTTP(_BaseHTTP):
         *,
         body: Any | None = None,
         query: Query | None = None,
+        files: Any | None = None,
+        form: Any | None = None,
         request_options: RequestOptions | None = None,
     ) -> httpx.Response:
         url = self._build_url(path, _normalize_query(query))
         headers = self._build_request_headers(request_options)
+        multipart = files is not None or form is not None
         content: bytes | None = None
-        if body is not None:
+        if body is not None and not multipart:
             content = json.dumps(body).encode("utf-8")
             headers.setdefault(FLOOPY_HEADERS.CONTENT_TYPE, "application/json")
         timeout = self._timeout_for(request_options)
@@ -361,9 +445,14 @@ class AsyncHTTP(_BaseHTTP):
         attempt = 0
         while True:
             try:
-                response = await self._client.request(
-                    method, url, headers=headers, content=content, timeout=timeout
-                )
+                if multipart:
+                    response = await self._client.request(
+                        method, url, headers=headers, data=form, files=files, timeout=timeout
+                    )
+                else:
+                    response = await self._client.request(
+                        method, url, headers=headers, content=content, timeout=timeout
+                    )
             except httpx.TimeoutException as err:
                 raise FloopyTimeoutError(f"Request timed out after {timeout}s", err) from err
             except httpx.RequestError as err:

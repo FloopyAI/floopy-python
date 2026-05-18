@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .batches import Batch, BatchList, BatchRequestCounts
 from .constraints import OrgConstraints
 from .decisions import Decision, DecisionListPage
 from .evaluations import (
@@ -19,6 +20,7 @@ from .experiments import (
 )
 from .export import ExportedDecisionRow, ExportFormat, ExportTrailer
 from .feedback import FeedbackSubmitResponse
+from .files import FileList, FileObject
 from .routing import FirewallDecision, RoutingExplainResult
 from .sessions import Session, SessionTurn
 from .shared import (
@@ -29,6 +31,9 @@ from .shared import (
 )
 
 __all__ = [
+    "Batch",
+    "BatchList",
+    "BatchRequestCounts",
     "CacheOptions",
     "Decision",
     "DecisionListPage",
@@ -44,6 +49,8 @@ __all__ = [
     "ExportTrailer",
     "ExportedDecisionRow",
     "FeedbackSubmitResponse",
+    "FileList",
+    "FileObject",
     "FirewallDecision",
     "FloopyOptions",
     "OrgConstraints",
