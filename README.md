@@ -196,6 +196,35 @@ session = floopy.sessions.get(session_id)
 floopy.chat.completions.create(model="gpt-4o", messages=session.messages)
 ```
 
+### `files` and `batches`
+
+OpenAI-shaped Batch + Files passthrough. A batch carries no model up
+front, so select the upstream with `provider=` (sent as the
+`floopy-provider` header) — optional when the key has one provider.
+`AsyncFloopy` exposes the same `files`/`batches` API.
+
+```python
+file = floopy.files.upload(
+    file=open("requests.jsonl", "rb").read(),
+    filename="requests.jsonl",
+    purpose="batch",
+    provider="openai",
+)
+batch = floopy.batches.create(
+    input_file_id=file.id,
+    endpoint="/v1/chat/completions",
+    completion_window="24h",
+    provider="openai",
+)
+done = floopy.batches.retrieve(batch.id, provider="openai")
+if done.status == "completed" and done.output_file_id:
+    out = floopy.files.content(done.output_file_id, provider="openai")  # bytes
+floopy.batches.cancel(batch.id, provider="openai")
+floopy.files.delete(file.id, provider="openai")
+```
+
+`files.list`, `files.retrieve`, and `batches.list` are also available.
+
 ## Streaming
 
 `chat.completions` streaming is delegated to `openai` and yields chunks

@@ -51,6 +51,7 @@ Changelog = "https://github.com/FloopyAI/floopy-python/blob/main/CHANGELOG.md"
 dev = [
   "pytest>=8.3",
   "pytest-asyncio>=0.24",
+  "pytest-cov>=6.0",
   "respx>=0.21",
   "ruff>=0.8",
   "mypy>=1.13",
@@ -70,7 +71,23 @@ include = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
-addopts = "-ra"
+addopts = "-ra --cov --cov-report=term-missing --cov-fail-under=100"
+
+[tool.coverage.run]
+branch = true
+# Scoped to the Batch/Files surface added in this PR — that code is held
+# to 100%. Pre-existing modules are out of scope for this gate.
+include = [
+  "src/floopy/resources/files.py",
+  "src/floopy/resources/batches.py",
+  "src/floopy/resources/_batch_options.py",
+  "src/floopy/types/files.py",
+  "src/floopy/types/batches.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
 
 [tool.ruff]
 line-length = 100

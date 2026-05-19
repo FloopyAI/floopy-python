@@ -25,6 +25,7 @@ class FLOOPY_HEADERS:
     PROMPT_ID = "Floopy-Prompt-Id"
     PROMPT_VERSION = "Floopy-Prompt-Version"
     LLM_SECURITY_ENABLED = "floopy-llm-security-enabled"
+    PROVIDER = "floopy-provider"
     CONFIRM = "X-Floopy-Confirm"
     REQUEST_ID = "X-Request-Id"
     AUTHORIZATION = "Authorization"
@@ -54,6 +55,24 @@ class ENDPOINTS:
     EXPORT_DECISIONS = "/export/decisions"
     ROUTING_EXPLAIN = "/routing/explain"
     EVALUATIONS = "/evaluations"
+    FILES = "/files"
+    BATCHES = "/batches"
+
+    @staticmethod
+    def file_by_id(file_id: str) -> str:
+        return f"/files/{_seg(file_id)}"
+
+    @staticmethod
+    def file_content(file_id: str) -> str:
+        return f"/files/{_seg(file_id)}/content"
+
+    @staticmethod
+    def batch_by_id(batch_id: str) -> str:
+        return f"/batches/{_seg(batch_id)}"
+
+    @staticmethod
+    def batch_cancel(batch_id: str) -> str:
+        return f"/batches/{_seg(batch_id)}/cancel"
 
     @staticmethod
     def decision_by_id(decision_id: str) -> str:
