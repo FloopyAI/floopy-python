@@ -17,6 +17,7 @@ def _body(
     messages: list[ChatCompletionMessageParam],
     temperature: float | None,
     max_tokens: int | None,
+    max_completion_tokens: int | None,
     top_p: float | None,
 ) -> dict[str, Any]:
     body: dict[str, Any] = {"model": model, "messages": messages}
@@ -24,6 +25,8 @@ def _body(
         body["temperature"] = temperature
     if max_tokens is not None:
         body["max_tokens"] = max_tokens
+    if max_completion_tokens is not None:
+        body["max_completion_tokens"] = max_completion_tokens
     if top_p is not None:
         body["top_p"] = top_p
     return body
@@ -40,11 +43,17 @@ class RoutingResource:
         messages: list[ChatCompletionMessageParam],
         temperature: float | None = None,
         max_tokens: int | None = None,
+        max_completion_tokens: int | None = None,
         top_p: float | None = None,
         request_options: RequestOptions | None = None,
     ) -> RoutingExplainResult:
         """Routing dry-run (Pro plan). ``would_select`` is ``None`` when the
-        firewall blocks the request."""
+        firewall blocks the request.
+
+        Prefer ``max_completion_tokens`` (the current OpenAI standard); it takes
+        precedence over the legacy ``max_tokens`` when both are set, and the
+        gateway coerces ``max_tokens`` into ``max_completion_tokens`` before
+        forwarding to any OpenAI-compatible provider."""
         data, _ = self._http.request(
             "POST",
             ENDPOINTS.ROUTING_EXPLAIN,
@@ -53,6 +62,7 @@ class RoutingResource:
                 messages=messages,
                 temperature=temperature,
                 max_tokens=max_tokens,
+                max_completion_tokens=max_completion_tokens,
                 top_p=top_p,
             ),
             request_options=request_options,
@@ -71,6 +81,7 @@ class AsyncRoutingResource:
         messages: list[ChatCompletionMessageParam],
         temperature: float | None = None,
         max_tokens: int | None = None,
+        max_completion_tokens: int | None = None,
         top_p: float | None = None,
         request_options: RequestOptions | None = None,
     ) -> RoutingExplainResult:
@@ -82,6 +93,7 @@ class AsyncRoutingResource:
                 messages=messages,
                 temperature=temperature,
                 max_tokens=max_tokens,
+                max_completion_tokens=max_completion_tokens,
                 top_p=top_p,
             ),
             request_options=request_options,
