@@ -6,6 +6,14 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 
 Releases are produced by `release-please` from Conventional Commits.
 
+## [0.4.0](https://github.com/FloopyAI/floopy-python/compare/floopy-sdk-v0.3.0...floopy-sdk-v0.4.0) (2026-07-06)
+
+
+### Added
+
+* add max_completion_tokens to routing explain ([991bc13](https://github.com/FloopyAI/floopy-python/commit/991bc138b02a83bec4f61c73ea08f8e4bd13ce83))
+* add max_completion_tokens to routing explain ([7e781b0](https://github.com/FloopyAI/floopy-python/commit/7e781b0f48bc5374277cf7ddcc8ee82b10dd200f))
+
 ## [0.3.0](https://github.com/FloopyAI/floopy-python/compare/floopy-sdk-v0.2.0...floopy-sdk-v0.3.0) (2026-05-19)
 
 
