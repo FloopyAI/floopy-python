@@ -11,6 +11,22 @@ and the project adheres to [Semantic Versioning](https://semver.org/).
 
 Releases are produced by `release-please` from Conventional Commits.
 
+## [1.0.0](https://github.com/FloopyAI/floopy-python/compare/floopy-sdk-v0.4.0...floopy-sdk-v1.0.0) (2026-10-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* The exposed OpenAI delegate and resource types now come from OpenAI 3.x instead of 1.x.
+
+### Added
+
+* expose native Responses API and upgrade OpenAI client ([f910062](https://github.com/FloopyAI/floopy-python/commit/f9100620b371792accfc8900c5dea216e350a11d))
+
+
+### Docs
+
+* format README examples for current Ruff ([ccc1d37](https://github.com/FloopyAI/floopy-python/commit/ccc1d37c7bb1416c635158a46e2699769ba1a1d3))
+
 ## [0.4.0](https://github.com/FloopyAI/floopy-python/compare/floopy-sdk-v0.3.0...floopy-sdk-v0.4.0) (2026-07-06)
 
 
