@@ -48,6 +48,7 @@ Async is symmetric:
 import asyncio
 from floopy import AsyncFloopy
 
+
 async def main() -> None:
     async with AsyncFloopy(api_key="fl_...") as floopy:
         r = await floopy.chat.completions.create(
@@ -55,6 +56,7 @@ async def main() -> None:
             messages=[{"role": "user", "content": "Hello!"}],
         )
         print(r.choices[0].message.content)
+
 
 asyncio.run(main())
 ```
@@ -125,9 +127,9 @@ floopy.feedback.submit(score=9, useful=True, session_id=r.id)
 decision = floopy.decisions.get(request_id)
 page = floopy.decisions.list(from_=since, limit=50)
 
-for d in floopy.decisions.iterate(from_=since):   # one at a time
+for d in floopy.decisions.iterate(from_=since):  # one at a time
     ...
-for p in floopy.decisions.pages(from_=since):     # page at a time
+for p in floopy.decisions.pages(from_=since):  # page at a time
     ...
 ```
 
@@ -167,7 +169,7 @@ for row in floopy.export.decisions(from_=start, to=end):
 stream = floopy.export.decisions_with_trailer(from_=start, to=end)
 for row in stream:
     ...
-print(stream.trailer)   # populated after iteration completes
+print(stream.trailer)  # populated after iteration completes
 ```
 
 ### `evaluations`
@@ -276,3 +278,9 @@ floopy = Floopy(api_key="fl_...", base_url="https://gateway.internal.acme.com/v1
 ## License
 
 Apache-2.0 © Floopy
+
+## Responses API
+
+Use `client.responses.create(...)` / `await client.responses.create(...)` for native `POST /v1/responses`, including reasoning with function tools and typed streaming events. The delegate uses your Floopy base URL, API key and default gateway headers.
+
+This release uses OpenAI Python >=3.25.0,<4. Responses currently routes to compatible OpenAI targets through the existing gateway orchestration. Stateless text caching requires `store: false`; calls with tools or provider-managed history bypass cache. Background jobs and public response-management methods are not exposed by the gateway yet. See [Responses API documentation](https://docs.floopy.ai/docs/api/responses/).

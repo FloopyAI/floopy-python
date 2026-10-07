@@ -47,6 +47,7 @@ if TYPE_CHECKING:
         Models,
     )
     from openai.resources.chat import AsyncChat, Chat
+    from openai.resources.responses import AsyncResponses, Responses
 
 
 class Floopy:
@@ -103,6 +104,11 @@ class Floopy:
     @property
     def embeddings(self) -> Embeddings:
         return self.openai.embeddings
+
+    @property
+    def responses(self) -> Responses:
+        """Native Responses API using the gateway and Floopy options."""
+        return self.openai.responses
 
     @property
     def models(self) -> Models:
@@ -173,6 +179,10 @@ class AsyncFloopy:
     @property
     def embeddings(self) -> AsyncEmbeddings:
         return self.openai.embeddings
+
+    @property
+    def responses(self) -> AsyncResponses:
+        return self.openai.responses
 
     @property
     def models(self) -> AsyncModels:

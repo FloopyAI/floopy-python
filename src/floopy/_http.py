@@ -86,6 +86,14 @@ class _BaseHTTP:
     def api_key(self) -> str:
         return self._api_key
 
+    @property
+    def timeout(self) -> float:
+        return self._timeout
+
+    @property
+    def max_retries(self) -> int:
+        return self._max_retries
+
     def get_default_request_headers(self) -> dict[str, str]:
         return merge_headers(
             self._default_headers,

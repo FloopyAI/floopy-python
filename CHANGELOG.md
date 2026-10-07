@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Expose native Responses creation and streaming through the configured OpenAI delegate.
+- Upgrade to OpenAI Python >=3.25.0,<4.
+
 All notable changes to `floopy-sdk` (Python) are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and the project adheres to [Semantic Versioning](https://semver.org/).
