@@ -32,6 +32,8 @@ def create_openai_delegate(http: SyncHTTP) -> OpenAI:
     return OpenAI(
         api_key=http.api_key,
         base_url=http.base_url,
+        timeout=http.timeout,
+        max_retries=http.max_retries,
         default_headers=_delegate_headers(http.get_default_request_headers()),
     )
 
@@ -40,5 +42,7 @@ def create_async_openai_delegate(http: AsyncHTTP) -> AsyncOpenAI:
     return AsyncOpenAI(
         api_key=http.api_key,
         base_url=http.base_url,
+        timeout=http.timeout,
+        max_retries=http.max_retries,
         default_headers=_delegate_headers(http.get_default_request_headers()),
     )
