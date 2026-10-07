@@ -48,6 +48,7 @@ Async is symmetric:
 import asyncio
 from floopy import AsyncFloopy
 
+
 async def main() -> None:
     async with AsyncFloopy(api_key="fl_...") as floopy:
         r = await floopy.chat.completions.create(
@@ -55,6 +56,7 @@ async def main() -> None:
             messages=[{"role": "user", "content": "Hello!"}],
         )
         print(r.choices[0].message.content)
+
 
 asyncio.run(main())
 ```
@@ -125,9 +127,9 @@ floopy.feedback.submit(score=9, useful=True, session_id=r.id)
 decision = floopy.decisions.get(request_id)
 page = floopy.decisions.list(from_=since, limit=50)
 
-for d in floopy.decisions.iterate(from_=since):   # one at a time
+for d in floopy.decisions.iterate(from_=since):  # one at a time
     ...
-for p in floopy.decisions.pages(from_=since):     # page at a time
+for p in floopy.decisions.pages(from_=since):  # page at a time
     ...
 ```
 
@@ -167,7 +169,7 @@ for row in floopy.export.decisions(from_=start, to=end):
 stream = floopy.export.decisions_with_trailer(from_=start, to=end)
 for row in stream:
     ...
-print(stream.trailer)   # populated after iteration completes
+print(stream.trailer)  # populated after iteration completes
 ```
 
 ### `evaluations`
